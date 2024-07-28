@@ -6,6 +6,7 @@ import com.activity.activitycalendar.security.CustomUserDetailsService;
 import com.activity.activitycalendar.security.JwtRequestFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -39,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
+@ConditionalOnProperty(name="com.activity.resourceserver.conf.enabled", havingValue = "false")
 public class SecurityConfiguration {
 
     private final CustomUserDetailsService customUserDetailsService;
@@ -51,6 +53,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
+        System.out.println("Inside Security Filter Chain Group");
 
         httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
         httpSecurity.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable());

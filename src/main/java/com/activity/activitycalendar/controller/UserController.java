@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import com.activity.activitycalendar.entity.User;
 import com.activity.activitycalendar.mapper.UserMapper;
 import com.activity.activitycalendar.model.UserDto;
+import com.activity.activitycalendar.service.KeycloakService;
 import com.activity.activitycalendar.service.UserService;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +23,18 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final KeycloakService keycloakService;
+
+    @Value("${com.activity.resourceserver.conf.enabled}")
+    private boolean resourceServerEnabled;
 
     @PostMapping("/user")
     public ResponseEntity<User> createUser(@RequestBody UserDto userDto) {
         User user = UserMapper.userMapper.mapUserDtoToUser(userDto);
-        System.out.println("User information is" + user.getFirstName());
+        if (resourceServerEnabled) {
+            System.out.println("Creating Keycloak User...");
+            this.keycloakService.createUserForKeycloak(userDto);
+        }
         return ResponseEntity.status(201).body(this.userService.createUser(user));
     }
 
