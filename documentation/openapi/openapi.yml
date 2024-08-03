@@ -1,0 +1,241 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8085
+  description: Generated server url
+paths:
+  /validateuser:
+    post:
+      tags:
+      - user-controller
+      operationId: checkUserExist
+      parameters:
+      - name: requestParams
+        in: query
+        required: true
+        schema:
+          type: object
+          additionalProperties:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /user:
+    post:
+      tags:
+      - user-controller
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+  /returnvalidateuser:
+    post:
+      tags:
+      - user-controller
+      operationId: checkUserExist_1
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /authenticate:
+    post:
+      tags:
+      - activity-login-controller
+      operationId: authenticate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /activity:
+    get:
+      tags:
+      - activity-controller
+      operationId: getActivities
+      parameters:
+      - name: activityDate
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityDto'
+    post:
+      tags:
+      - activity-controller
+      operationId: saveActivity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityDto'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityDto'
+  /activity/{activityId}/complete:
+    patch:
+      tags:
+      - activity-controller
+      operationId: markActivityCompleted
+      parameters:
+      - name: activityId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /activity/count:
+    get:
+      tags:
+      - activity-controller
+      operationId: getActivitiesByCount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityCount'
+  /activity/{activityId}:
+    delete:
+      tags:
+      - activity-controller
+      operationId: deleteActivity
+      parameters:
+      - name: activityId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    UserDto:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    Activity:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        activityDetails:
+          type: string
+        description:
+          type: string
+        activityDate:
+          type: string
+          format: date
+        activityStatus:
+          type: string
+          enum:
+          - ASSIGNED
+          - FINISHED
+        user:
+          $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        activityList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+    ActivityDto:
+      type: object
+      properties:
+        activityId:
+          type: integer
+          format: int32
+        activityDetails:
+          type: string
+        activityDate:
+          type: string
+          format: date
+        activityStatus:
+          type: string
+          enum:
+          - ASSIGNED
+          - FINISHED
+        description:
+          type: string
+    ActivityCount:
+      type: object
+      properties:
+        activityDate:
+          type: string
+          format: date
+        countTotal:
+          type: integer
+          format: int64

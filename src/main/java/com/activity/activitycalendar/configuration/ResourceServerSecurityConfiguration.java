@@ -20,7 +20,9 @@ public class ResourceServerSecurityConfiguration {
     public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         System.out.println("Inside Security Filter chain group of ResourceServerSecurityConfiguration");
         httpSecurity
-                .authorizeRequests().requestMatchers("/user","/authenticate", "/error", "/h2-console")
+                .authorizeRequests().requestMatchers(
+                        "/user","/authenticate", "/error", "/h2-console",
+                        "/swagger-ui/*", "/v3/api-docs","/v3/api-docs/*","/v3/**", "/swagger-ui/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -39,7 +41,10 @@ public class ResourceServerSecurityConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**")
+        return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"),
+                new AntPathRequestMatcher("/swagger-ui/**"),
+                new AntPathRequestMatcher("v3/api-docs"),
+                new AntPathRequestMatcher("/v3/api-docs/**")
                 ,new AntPathRequestMatcher("*.css"), new AntPathRequestMatcher("*.png"), new AntPathRequestMatcher("*.js"));
     }
 }

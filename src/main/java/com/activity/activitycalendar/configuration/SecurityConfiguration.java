@@ -1,7 +1,5 @@
 package com.activity.activitycalendar.configuration;
 
-import com.activity.activitycalendar.security.CustomAccessDeniedHandler;
-import com.activity.activitycalendar.security.CustomAuthenticationEntryPoint;
 import com.activity.activitycalendar.security.CustomUserDetailsService;
 import com.activity.activitycalendar.security.JwtRequestFilter;
 
@@ -9,10 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,13 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
@@ -67,7 +59,10 @@ public class SecurityConfiguration {
 
 
         httpSecurity
-                .authorizeRequests().requestMatchers("/user","/authenticate", "/error").permitAll()
+                .authorizeRequests().requestMatchers("/user","/authenticate", "/error",
+                        "/swagger-ui/*", "/v3/api-docs",
+                        "/v3/api-docs/*","/v3/**",
+                        "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated();
 //                .and()
 //                //basic authentication code
