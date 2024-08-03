@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -18,7 +20,8 @@ public class ResourceServerSecurityConfiguration {
     public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         System.out.println("Inside Security Filter chain group of ResourceServerSecurityConfiguration");
         httpSecurity
-                .authorizeRequests().requestMatchers("/user","/authenticate", "/error").permitAll()
+                .authorizeRequests().requestMatchers("/user","/authenticate", "/error", "/h2-console")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> {
@@ -32,5 +35,11 @@ public class ResourceServerSecurityConfiguration {
                 -> httpSecurityOAuth2ResourceServerConfigurer.jwt(Customizer.withDefaults()));
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**")
+                ,new AntPathRequestMatcher("*.css"), new AntPathRequestMatcher("*.png"), new AntPathRequestMatcher("*.js"));
     }
 }
