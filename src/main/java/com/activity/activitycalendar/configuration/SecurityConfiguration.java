@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
-@ConditionalOnProperty(name="com.activity.resourceserver.conf.enabled", havingValue = "false")
+@ConditionalOnProperty(name="com.activity.authorization.type", havingValue = "custom")
 public class SecurityConfiguration {
 
     private final CustomUserDetailsService customUserDetailsService;

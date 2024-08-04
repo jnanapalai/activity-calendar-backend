@@ -11,11 +11,23 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * This class all security oriented configuration for
+ * Activity Calendar. It will activate if application run
+ * with com.activity.authorization.type = oauth.
+ */
 @Configuration
 @EnableWebSecurity(debug = true)
-@ConditionalOnProperty(name="com.activity.resourceserver.conf.enabled", havingValue = "true")
+@ConditionalOnProperty(name="com.activity.authorization.type", havingValue = "oauth")
 public class ResourceServerSecurityConfiguration {
 
+    /**
+     * This method create Security Filter chain
+     *
+     * @param httpSecurity instance of HttpSecurity
+     * @return
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         System.out.println("Inside Security Filter chain group of ResourceServerSecurityConfiguration");
@@ -39,6 +51,10 @@ public class ResourceServerSecurityConfiguration {
         return httpSecurity.build();
     }
 
+    /**
+     * Method to ignore security for specific Endpoints lik swagger and h2 database
+     * @return instance of WebSecurityCustomizer
+     */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"),
