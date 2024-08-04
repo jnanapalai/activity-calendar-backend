@@ -87,6 +87,11 @@
 			<version>25.0.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -139,7 +144,6 @@
 						</configuration>
 					</execution>
 				</executions>
-
 			</plugin>
 		</plugins>
 	</build>

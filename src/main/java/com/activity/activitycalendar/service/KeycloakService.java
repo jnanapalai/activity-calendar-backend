@@ -1,8 +1,5 @@
 package com.activity.activitycalendar.service;
 
-import jakarta.ws.rs.core.Response;
-import lombok.RequiredArgsConstructor;
-
 import com.activity.activitycalendar.model.UserDto;
 
 import org.keycloak.admin.client.CreatedResponseUtil;
@@ -12,13 +9,15 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
 
+import jakarta.ws.rs.core.Response;
+import lombok.RequiredArgsConstructor;
+
 
 @Service
 @RequiredArgsConstructor
 public class KeycloakService {
     private final Keycloak keycloak;
     private static final String REALM = "oauth2-realm-demo";
-    private static final String REALM_ROLE = "oauth2-realm-role";
 
     public void createUserForKeycloak(UserDto userDto) {
         UserRepresentation userRepresentation = new UserRepresentation();
@@ -29,6 +28,7 @@ public class KeycloakService {
         userRepresentation.setEnabled(true);
 
         Response response = keycloak.realm(REALM).users().create(userRepresentation);
+        System.out.println("Status code from Keycloak is "+ response.getStatus());
         if (response.getStatus() == 201) {
             String userId = CreatedResponseUtil.getCreatedId(response);
             CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
