@@ -9,9 +9,10 @@ For details check open api document [openapi](documentation/openapi/openapi.yml)
   
 # Run Docker for Key cloak and postgres
   docker-compose up -d
+
   **_NOTE:_**
   Running docker will not require if you want to run application with
-  configuration parameter: com.activity.authorization.type = oauth
+  configuration parameter: com.activity.authorization.type = custom
 
 # Run Application
   Any of the way you can run application
@@ -21,6 +22,7 @@ For details check open api document [openapi](documentation/openapi/openapi.yml)
         i) com.activity.authorization.type = oauth 
           (Running docker with keycloak and postgress require for this. 
            Do not forget to do [Running Docker File](#run-docker-for-key-cloak-and-postgres))
+        
         **or**
         ii) com.activity.authorization.type = oauth 
 
@@ -28,12 +30,14 @@ For details check open api document [openapi](documentation/openapi/openapi.yml)
      a) mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dcom.activity.authorization.type=oauth"
       (Running docker with keycloak and postgress require for this.
      Do not forget to do [Running Docker File](#run-docker-for-key-cloak-and-postgres))
+
      b) mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dcom.activity.authorization.type=custom"
 
   3. Run Application through java command from command promnt (cmd) and from **/target** folder
      a) java -jar activity-calendar-backend-0.0.1-SNAPSHOT.jar --com.activity.authorization.type=oauth
      (Running docker with keycloak and postgress require for this. 
       Do not forget to do [Running Docker File](#run-docker-for-key-cloak-and-postgres)) 
+
      b) java -jar activity-calendar-backend-0.0.1-SNAPSHOT.jar --com.activity.authorization.type=custom
 
     
