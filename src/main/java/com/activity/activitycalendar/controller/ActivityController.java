@@ -1,7 +1,10 @@
 package com.activity.activitycalendar.controller;
 
 
+
+import com.activity.activitycalendar.entity.Activity;
 import com.activity.activitycalendar.entity.User;
+import com.activity.activitycalendar.event.mapper.ActivityEventMapper;
 import com.activity.activitycalendar.mapper.ActivityMapper;
 import com.activity.activitycalendar.model.ActivityCount;
 import com.activity.activitycalendar.model.ActivityDto;
@@ -10,6 +13,7 @@ import com.activity.activitycalendar.service.UserService;
 import com.activity.activitycalendar.utility.ActivityUtil;
 
 import org.apache.coyote.BadRequestException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,9 +40,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ActivityController {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final ActivityService activityService;
     private final UserService userService;
     private final ActivityUtil activityUtil;
+    private final ActivityEventMapper activityEventMapper;
 
     /**
      * This method responsible take request from Rest client and
@@ -56,9 +62,12 @@ public class ActivityController {
                .getUserByUserNameOrEmail(activityUtil.getLoggedInUser()).getId());
        User user = userService
                .getUserByUserNameOrEmail(activityUtil.getLoggedInUser());
+
+       Activity activity = this.activityService.saveActivity(activityDTO,user);
+       applicationEventPublisher.publishEvent(this.activityEventMapper.entityToActivityCreated(activity));
        return ResponseEntity.status(201)
                .body(ActivityMapper.activityMapper.mapActivityToActivityDto
-                       (this.activityService.saveActivity(activityDTO,user)));
+                       (activity));
     }
 
     /**

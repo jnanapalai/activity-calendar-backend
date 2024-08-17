@@ -49,7 +49,11 @@ public class ActivityService {
     }
     public List<ActivityDto> findActivitiesByActivityDate(LocalDate activityDate, User user) {
         return  ActivityMapper.activityMapper
-                .mapActivityListToDtoList(this.activityRepository.findActivitiesByActivityDateAndUser(activityDate,user));
+                .mapActivityListToDtoList(this.activityRepository.
+                        findActivitiesByActivityDateAndUserOrActivityDateAndAssignedTo(
+                                activityDate,user,
+                                activityDate,
+                                user.getId()));
     }
 
     public List<ActivityCount> countTotalActivityByActivityDate(User user) {

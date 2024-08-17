@@ -6,26 +6,6 @@ servers:
 - url: http://localhost:8085
   description: Generated server url
 paths:
-  /validateuser:
-    post:
-      tags:
-      - user-controller
-      operationId: checkUserExist
-      parameters:
-      - name: requestParams
-        in: query
-        required: true
-        schema:
-          type: object
-          additionalProperties:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
   /user:
     post:
       tags:
@@ -44,38 +24,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/User'
-  /returnvalidateuser:
-    post:
-      tags:
-      - user-controller
-      operationId: checkUserExist_1
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-  /authenticate:
-    post:
-      tags:
-      - activity-login-controller
-      operationId: authenticate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              additionalProperties:
-                type: string
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: object
   /activity:
     get:
       tags:
@@ -128,6 +76,20 @@ paths:
       responses:
         "200":
           description: OK
+  /getAllUser:
+    get:
+      tags:
+      - user-controller
+      operationId: getUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDto'
   /activity/count:
     get:
       tags:
@@ -162,6 +124,9 @@ components:
     UserDto:
       type: object
       properties:
+        userId:
+          type: integer
+          format: int64
         firstName:
           type: string
         lastName:
@@ -185,6 +150,9 @@ components:
         activityDate:
           type: string
           format: date
+        assignedTo:
+          type: integer
+          format: int64
         activityStatus:
           type: string
           enum:
@@ -228,6 +196,9 @@ components:
           enum:
           - ASSIGNED
           - FINISHED
+        assignedTo:
+          type: integer
+          format: int64
         description:
           type: string
     ActivityCount:

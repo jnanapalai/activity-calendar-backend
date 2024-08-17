@@ -12,10 +12,10 @@ import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Integer> {
 
-    List<Activity> findActivitiesByActivityDateAndUser(LocalDate activityDate, User user);
+    List<Activity> findActivitiesByActivityDateAndUserOrActivityDateAndAssignedTo(LocalDate activityDate, User user,LocalDate activityDate2, Long assignedTo);
 
 
     @Query("SELECT new com.activity.activitycalendar.model.ActivityCount(a.activityDate, COUNT(a.activityDate)) "
-            + "FROM Activity AS a WHERE a.user = :user GROUP BY a.activityDate ORDER BY a.activityDate DESC")
+            + "FROM Activity AS a WHERE (a.user = :user or a.assignedTo = :#{#user.id}) GROUP BY a.activityDate ORDER BY a.activityDate DESC")
     List<ActivityCount> countTotalActivityByActivityDate(User user);
 }

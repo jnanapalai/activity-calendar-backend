@@ -7,6 +7,7 @@ import com.activity.activitycalendar.entity.User;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,6 +15,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
 
     public User createUser(User user) {
      return this.userRepository.save(user);

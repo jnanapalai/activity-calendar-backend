@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import com.activity.activitycalendar.entity.ActivityStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ActivityDto {
 
     private int activityId;
@@ -22,6 +24,7 @@ public class ActivityDto {
     private LocalDate activityDate;
 
     private ActivityStatus activityStatus;
+    private Long assignedTo;
 
     private String description;
 }

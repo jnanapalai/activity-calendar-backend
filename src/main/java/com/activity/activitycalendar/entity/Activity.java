@@ -39,6 +39,8 @@ public class Activity {
     @Column(name="activitydate")
     private LocalDate activityDate;
 
+    private Long assignedTo;
+
     @Enumerated(EnumType.STRING)
     @Column(name="activitystatus")
     private ActivityStatus activityStatus;
