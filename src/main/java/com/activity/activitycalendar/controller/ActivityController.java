@@ -57,7 +57,7 @@ public class ActivityController {
     @PostMapping(value = "/activity", consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ActivityDto> saveActivity(@RequestBody ActivityDto activityDTO) {
-       System.out.println("Date value is" + activityDTO.getActivityDate().toString());
+       System.out.println("Date value is" + activityDTO.activityDate().toString());
        System.out.println("request by user id " + userService
                .getUserByUserNameOrEmail(activityUtil.getLoggedInUser()).getId());
        User user = userService

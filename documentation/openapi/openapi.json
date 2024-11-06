@@ -198,6 +198,12 @@
           },
           "password" : {
             "type" : "string"
+          },
+          "accountType" : {
+            "type" : "string"
+          },
+          "organisationName" : {
+            "type" : "string"
           }
         }
       },
@@ -251,6 +257,12 @@
             "type" : "string"
           },
           "password" : {
+            "type" : "string"
+          },
+          "accountType" : {
+            "type" : "string"
+          },
+          "organisationName" : {
             "type" : "string"
           },
           "activityList" : {

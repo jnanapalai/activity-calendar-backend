@@ -1,23 +1,11 @@
 package com.activity.activitycalendar.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDto {
-
-    private Long userId;
-    private String firstName;
-    private String lastName;
-    private String userName;
-    private String email;
-    private String password;
+public record UserDto(Long userId, String firstName,
+                      String lastName, String userName,
+                      String email, String password,
+                      String accountType, @JsonProperty("company") String organisationName) {
 }

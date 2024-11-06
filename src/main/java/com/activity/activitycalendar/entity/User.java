@@ -32,6 +32,10 @@ public class User {
     private String email;
     @Column(name="password")
     private String password;
+    @Column(name = "account_type")
+    private String accountType;
+    @Column(name = "organisation_name")
+    private String organisationName;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Activity> activityList;

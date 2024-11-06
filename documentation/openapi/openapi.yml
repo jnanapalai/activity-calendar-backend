@@ -137,6 +137,10 @@ components:
           type: string
         password:
           type: string
+        accountType:
+          type: string
+        organisationName:
+          type: string
     Activity:
       type: object
       properties:
@@ -175,6 +179,10 @@ components:
         email:
           type: string
         password:
+          type: string
+        accountType:
+          type: string
+        organisationName:
           type: string
         activityList:
           type: array

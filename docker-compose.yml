@@ -1,7 +1,7 @@
 version: 3.9.0
 services:
   postgresql:
-    image: docker.io/bitnami/postgresql:latest
+    image: docker.io/bitnami/postgresql:16
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - POSTGRESQL_USERNAME=bn_keycloak

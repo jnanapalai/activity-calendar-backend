@@ -23,10 +23,10 @@ public class KeycloakService {
 
     public void createUserForKeycloak(UserDto userDto) {
         UserRepresentation userRepresentation = new UserRepresentation();
-        userRepresentation.setUsername(userDto.getUserName());
-        userRepresentation.setFirstName(userDto.getFirstName());
-        userRepresentation.setLastName(userDto.getLastName());
-        userRepresentation.setEmail(userDto.getEmail());
+        userRepresentation.setUsername(userDto.userName());
+        userRepresentation.setFirstName(userDto.firstName());
+        userRepresentation.setLastName(userDto.lastName());
+        userRepresentation.setEmail(userDto.email());
         userRepresentation.setEnabled(true);
 
         Response response = keycloak.realm(REALM).users().create(userRepresentation);
@@ -36,11 +36,13 @@ public class KeycloakService {
             CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
             credentialRepresentation.setTemporary(false);
             credentialRepresentation.setType("password");
-            credentialRepresentation.setValue(userDto.getPassword());
+            credentialRepresentation.setValue(userDto.password());
             UserResource userResource = keycloak.realm(REALM).users().get(userId);
             userResource.resetPassword(credentialRepresentation);
-
+        } else {
+            throw new RuntimeException("Unable to save user to Keycloak");
         }
+
     }
 }
 
